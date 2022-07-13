@@ -12,7 +12,8 @@ use crate::qname::QualifiedName;
 use crate::output::OutputDefinition;
 use crate::xdmerror::{Error, ErrorKind};
 use crate::value::Value;
-use crate::parsexml::{XMLDocument, XMLNode};
+use crate::parser::xml;
+use crate::parser::xml::XMLNode;
 
 /// A Forest. Forests contain [Tree]s. Each [Tree] is identified by a copyable value, similar to a Node value, that can be easily stored and passed as a parameter.
 #[derive(Clone)]
@@ -39,7 +40,8 @@ impl Forest {
     }
 
     pub fn grow_tree(&mut self, s: &str) -> Result<TreeIndex, Error> {
-	let d = XMLDocument::try_from(s)?;
+	//let d = XMLDocument::try_from(s)?;
+	let d = xml::parse(s.to_string())?;
 	if d.content.len() == 0 {
 	    Result::Err(Error::new(ErrorKind::Unknown, String::from("unable to parse XML")))
 	} else {

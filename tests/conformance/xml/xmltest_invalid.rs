@@ -8,7 +8,7 @@ James Clark XMLTEST cases
 
 use std::convert::TryFrom;
 use std::fs;
-use xrust::parsexml;
+use xrust::parser;
 
 
 #[test]
@@ -21,7 +21,7 @@ fn invalid002() {
         Description:Tests the "Proper Group/PE Nesting" validity constraint by fragmenting a content model between two parameter entities.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/002.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/002.xml").unwrap());
 
     assert!(testxml.is_err());
 
@@ -37,7 +37,7 @@ fn invalid005() {
         Description:Tests the "Proper Declaration/PE Nesting" validity constraint by fragmenting an element declaration between two parameter entities.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/005.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/005.xml").unwrap());
 
     assert!(testxml.is_err());
 
@@ -53,7 +53,7 @@ fn invalid006() {
         Description:Tests the "Proper Declaration/PE Nesting" validity constraint by fragmenting an element declaration between two parameter entities.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/006.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/006.xml").unwrap());
 
     assert!(testxml.is_err());
 
@@ -69,7 +69,7 @@ fn invalidnotsa022() {
         Description:Test the "Proper Conditional Section/ PE Nesting" validity constraint.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/not-sa/022.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/invalid/not-sa/022.xml").unwrap());
 
     assert!(testxml.is_err());
 

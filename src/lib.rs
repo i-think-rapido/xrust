@@ -42,6 +42,7 @@ We need your help!
 
 #![feature(test)]
 #![feature(associated_type_defaults)]
+#![feature(type_name_of_val)]
 
 extern crate test;
 
@@ -61,8 +62,8 @@ pub use item::{Sequence, SequenceTrait, Item};
 
 mod parsecommon;
 
-pub mod parsexml;
-pub use parsexml::XMLDocument;
+pub mod parser;
+pub use parser::xml::XMLDocument;
 
 pub mod xpath;
 pub use xpath::parse;

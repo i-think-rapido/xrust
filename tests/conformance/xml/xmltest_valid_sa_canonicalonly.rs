@@ -8,7 +8,7 @@ James Clark XMLTEST cases - Standalone
 
 use std::convert::TryFrom;
 use std::fs;
-use xrust::parsexml;
+use xrust::parser;
 
 #[test]
 fn validsa001() {
@@ -19,7 +19,7 @@ fn validsa001() {
         Description:Test demonstrates an Element Type Declaration with Mixed Content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/001.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/001.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -34,7 +34,7 @@ fn validsa002() {
         Description:Test demonstrates that whitespace is permitted after the tag name in a Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/002.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/002.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -49,7 +49,7 @@ fn validsa003() {
         Description:Test demonstrates that whitespace is permitted after the tag name in an End-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/003.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/003.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -64,7 +64,7 @@ fn validsa004() {
         Description:Test demonstrates a valid attribute specification within a Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/004.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/004.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -79,7 +79,7 @@ fn validsa005() {
         Description:Test demonstrates a valid attribute specification within a Start-tag thatcontains whitespace on both sides of the equal sign.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/005.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/005.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -94,7 +94,7 @@ fn validsa006() {
         Description:Test demonstrates that the AttValue within a Start-tag can use a single quote as a delimter.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/006.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/006.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -109,7 +109,7 @@ fn validsa007() {
         Description:Test demonstrates numeric character references can be used for element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/007.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/007.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -124,7 +124,7 @@ fn validsa008() {
         Description:Test demonstrates character references can be used for element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/008.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/008.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -139,7 +139,7 @@ fn validsa009() {
         Description:Test demonstrates that PubidChar can be used for element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/009.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/009.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -154,7 +154,7 @@ fn validsa010() {
         Description:Test demonstrates that whitespace is valid after the Attribute in a Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/010.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/010.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -169,7 +169,7 @@ fn validsa011() {
         Description:Test demonstrates mutliple Attibutes within the Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/011.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/011.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -185,7 +185,7 @@ fn validsa012() {
         Description:Uses a legal XML 1.0 name consisting of a single colon character (disallowed by the latest XML Namespaces draft).
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/012.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/012.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -200,7 +200,7 @@ fn validsa013() {
         Description:Test demonstrates that the Attribute in a Start-tag can consist of numerals along with special characters.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/013.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/013.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -215,7 +215,7 @@ fn validsa014() {
         Description:Test demonstrates that all lower case letters are valid for the Attribute in a Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/014.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/014.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -230,7 +230,7 @@ fn validsa015() {
         Description:Test demonstrates that all upper case letters are valid for the Attribute in a Start-tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/015.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/015.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -245,7 +245,7 @@ fn validsa016() {
         Description:Test demonstrates that Processing Instructions are valid element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/016.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/016.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -261,7 +261,7 @@ fn validsa017() {
         Description:Test demonstrates that Processing Instructions are valid element content and there can be more than one.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/017.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/017.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -276,7 +276,7 @@ fn validsa018() {
         Description:Test demonstrates that CDATA sections are valid element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/018.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/018.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -291,7 +291,7 @@ fn validsa019() {
         Description:Test demonstrates that CDATA sections are valid element content and thatampersands may occur in their literal form.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/019.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/019.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -306,7 +306,7 @@ fn validsa020() {
         Description:Test demonstractes that CDATA sections are valid element content and thateveryting between the CDStart and CDEnd is recognized as character data not markup.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/020.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/020.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -321,7 +321,7 @@ fn validsa021() {
         Description:Test demonstrates that comments are valid element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/021.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/021.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -336,7 +336,7 @@ fn validsa022() {
         Description:Test demonstrates that comments are valid element content and that all characters before the double-hypen right angle combination are considered part of thecomment.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/022.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/022.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -351,7 +351,7 @@ fn validsa023() {
         Description:Test demonstrates that Entity References are valid element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/023.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/023.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -366,7 +366,7 @@ fn validsa024() {
         Description:Test demonstrates that Entity References are valid element content and also demonstrates a valid Entity Declaration.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/024.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/024.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -381,7 +381,7 @@ fn validsa025() {
         Description:Test demonstrates an Element Type Declaration and that the contentspec can be of mixed content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/025.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/025.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -396,7 +396,7 @@ fn validsa026() {
         Description:Test demonstrates an Element Type Declaration and that EMPTY is a valid contentspec.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/026.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/026.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -411,7 +411,7 @@ fn validsa027() {
         Description:Test demonstrates an Element Type Declaration and that ANY is a valid contenspec.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/027.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/027.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -426,7 +426,7 @@ fn validsa028() {
         Description:Test demonstrates a valid prolog that uses double quotes as delimeters around the VersionNum.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/028.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/028.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -441,7 +441,7 @@ fn validsa029() {
         Description:Test demonstrates a valid prolog that uses single quotes as delimters around the VersionNum.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/029.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/029.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -456,7 +456,7 @@ fn validsa030() {
         Description:Test demonstrates a valid prolog that contains whitespace on both sides of the equal sign in the VersionInfo.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/030.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/030.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -471,7 +471,7 @@ fn validsa031() {
         Description:Test demonstrates a valid EncodingDecl within the prolog.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/031.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/031.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -486,7 +486,7 @@ fn validsa032() {
         Description:Test demonstrates a valid SDDecl within the prolog.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/032.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/032.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -501,7 +501,7 @@ fn validsa033() {
         Description:Test demonstrates that both a EncodingDecl and SDDecl are valid within the prolog.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/033.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/033.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -516,7 +516,7 @@ fn validsa034() {
         Description:Test demonstrates the correct syntax for an Empty element tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/034.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/034.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -531,7 +531,7 @@ fn validsa035() {
         Description:Test demonstrates that whitespace is permissible after the name in an Empty element tag.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/035.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/035.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -547,7 +547,7 @@ fn validsa036() {
         Description:Test demonstrates a valid processing instruction.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/036.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/036.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -562,7 +562,7 @@ fn validsa017a() {
         Description:Test demonstrates that two apparently wrong Processing Instructions make aright one, with very odd content "some data ? > <?".
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/017a.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/017a.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -577,7 +577,7 @@ fn validsa037() {
         Description:Test demonstrates a valid comment and that it may appear anywhere in the document including at the end.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/037.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/037.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -592,7 +592,7 @@ fn validsa038() {
         Description:Test demonstrates a valid comment and that it may appear anywhere in the document including the beginning.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/038.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/038.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -608,7 +608,7 @@ fn validsa039() {
         Description:Test demonstrates a valid processing instruction and that it may appear at the beginning of the document.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/039.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/039.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -623,7 +623,7 @@ fn validsa040() {
         Description:Test demonstrates an Attribute List declaration that uses a StringType as the AttType.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/040.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/040.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -638,7 +638,7 @@ fn validsa041() {
         Description:Test demonstrates an Attribute List declaration that uses a StringType as the AttType and also expands the CDATA attribute with a character reference.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/041.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/041.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -653,7 +653,7 @@ fn validsa042() {
         Description:Test demonstrates an Attribute List declaration that uses a StringType as the AttType and also expands the CDATA attribute with a character reference. The test also shows that the leading zeros in the character reference are ignored.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/042.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/042.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -668,7 +668,7 @@ fn validsa043() {
         Description:An element's attributes may be declared before its content model; and attribute values may contain newlines.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/043.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/043.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -683,7 +683,7 @@ fn validsa044() {
         Description:Test demonstrates that the empty-element tag must be use for an elements that are declared EMPTY.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/044.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/044.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -698,7 +698,7 @@ fn validsa045() {
         Description:Tests whether more than one definition can be provided for the same attribute of a given element type with the first declaration being binding.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/045.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/045.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -713,7 +713,7 @@ fn validsa046() {
         Description:Test demonstrates that when more than one AttlistDecl is provided for a given element type, the contents of all those provided are merged.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/046.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/046.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -728,7 +728,7 @@ fn validsa047() {
         Description:Test demonstrates that extra whitespace is normalized into single space character.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/047.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/047.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -743,7 +743,7 @@ fn validsa048() {
         Description:Test demonstrates that character data is valid element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/048.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/048.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -758,10 +758,9 @@ fn validsa049() {
         Description:Test demonstrates that characters outside of normal ascii range can be used as element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/049.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/049.xml").unwrap());
 
     assert!(testxml.is_ok());
-
 }
 
 #[test]
@@ -773,7 +772,7 @@ fn validsa050() {
         Description:Test demonstrates that characters outside of normal ascii range can be used as element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/050.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/050.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -788,7 +787,7 @@ fn validsa051() {
         Description:The document is encoded in UTF-16 and uses some name characters well outside of the normal ASCII range.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/051.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/051.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -803,7 +802,7 @@ fn validsa052() {
         Description:The document is encoded in UTF-8 and the text inside the root element uses two non-ASCII characters, encoded in UTF-8 and each of which expands to a Unicode surrogate pair.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/052.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/052.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -818,7 +817,7 @@ fn validsa053() {
         Description:Tests inclusion of a well-formed internal entity, which holds an element required by the content model.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/053.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/053.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -833,7 +832,7 @@ fn validsa054() {
         Description:Test demonstrates that extra whitespace within Start-tags and End-tags are nomalized into single spaces.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/054.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/054.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -849,7 +848,7 @@ fn validsa055() {
         Description:Test demonstrates that extra whitespace within a processing instruction willnormalized into s single space character.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/055.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/055.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -864,7 +863,7 @@ fn validsa056() {
         Description:Test demonstrates an Attribute List declaration that uses a StringType as the AttType and also expands the CDATA attribute with a character reference. The test also shows that the leading zeros in the character reference are ignored.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/056.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/056.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -879,7 +878,7 @@ fn validsa057() {
         Description:Test demonstrates an element content model whose element can occur zero or more times.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/057.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/057.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -894,7 +893,7 @@ fn validsa058() {
         Description:Test demonstrates that extra whitespace be normalized into a single space character in an attribute of type NMTOKENS.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/058.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/058.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -909,7 +908,7 @@ fn validsa059() {
         Description:Test demonstrates an Element Type Declaration that uses the contentspec of EMPTY. The element cannot have any contents and must always appear as an empty element in the document. The test also shows an Attribute-list declaration with multiple AttDef's.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/059.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/059.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -924,7 +923,7 @@ fn validsa060() {
         Description:Test demonstrates the use of decimal Character References within element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/060.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/060.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -939,7 +938,7 @@ fn validsa061() {
         Description:Test demonstrates the use of decimal Character References within element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/061.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/061.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -954,7 +953,7 @@ fn validsa062() {
         Description:Test demonstrates the use of hexadecimal Character References within element.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/062.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/062.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -969,7 +968,7 @@ fn validsa063() {
         Description:The document is encoded in UTF-8 and the name of the root element type uses non-ASCII characters.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/063.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/063.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -984,7 +983,7 @@ fn validsa064() {
         Description:Tests in-line handling of two legal character references, which each expand to a Unicode surrogate pair.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/064.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/064.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -999,7 +998,7 @@ fn validsa065() {
         Description:Tests ability to define an internal entity which can't legally be expanded (contains an unquoted <).
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/065.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/065.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1014,7 +1013,7 @@ fn validsa066() {
         Description:Expands a CDATA attribute with a character reference.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/066.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/066.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1029,7 +1028,7 @@ fn validsa067() {
         Description:Test demonstrates the use of decimal character references within element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/067.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/067.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1044,7 +1043,7 @@ fn validsa068() {
         Description:Tests definition of an internal entity holding a carriage return character reference, which must not be normalized before reporting to the application. Line break normalization only occurs when parsing external parsed entities.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/068.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/068.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1060,7 +1059,7 @@ fn validsa069() {
         Description:Verifies that an XML parser will parse a NOTATION declaration; the output phase of this test ensures that it's reported to the application.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/069.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/069.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1075,7 +1074,7 @@ fn validsa070() {
         Description:Verifies that internal parameter entities are correctly expanded within the internal subset.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/070.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/070.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1090,7 +1089,7 @@ fn validsa071() {
         Description:Test demonstrates that an AttlistDecl can use ID as the TokenizedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/071.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/071.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1105,7 +1104,7 @@ fn validsa072() {
         Description:Test demonstrates that an AttlistDecl can use IDREF as the TokenizedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/072.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/072.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1120,7 +1119,7 @@ fn validsa073() {
         Description:Test demonstrates that an AttlistDecl can use IDREFS as the TokenizedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/073.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/073.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1135,7 +1134,7 @@ fn validsa074() {
         Description:Test demonstrates that an AttlistDecl can use ENTITY as the TokenizedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/074.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/074.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1150,7 +1149,7 @@ fn validsa075() {
         Description:Test demonstrates that an AttlistDecl can use ENTITIES as the TokenizedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/075.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/075.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1166,7 +1165,7 @@ fn validsa076() {
         Description:Verifies that an XML parser will parse a NOTATION attribute; the output phase of this test ensures that both notations are reported to the application.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/076.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/076.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1181,7 +1180,7 @@ fn validsa077() {
         Description:Test demonstrates that an AttlistDecl can use an EnumeratedType within the Attribute type. The test also shows that IMPLIED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/077.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/077.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1196,7 +1195,7 @@ fn validsa078() {
         Description:Test demonstrates that an AttlistDecl can use an StringType of CDATA within the Attribute type. The test also shows that REQUIRED is a valid DefaultDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/078.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/078.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1211,7 +1210,7 @@ fn validsa079() {
         Description:Test demonstrates that an AttlistDecl can use an StringType of CDATA within the Attribute type. The test also shows that FIXED is a valid DefaultDecl and that a value can be given to the attribute in the Start-tag as well as the AttListDecl.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/079.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/079.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1226,7 +1225,7 @@ fn validsa080() {
         Description:Test demonstrates that an AttlistDecl can use an StringType of CDATA within the Attribute type. The test also shows that FIXED is a valid DefaultDecl and that an value can be given to the attribute.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/080.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/080.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1241,7 +1240,7 @@ fn validsa081() {
         Description:Test demonstrates the use of the optional character following a name or list to govern the number of times an element or content particles in the list occur.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/081.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/081.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1256,7 +1255,7 @@ fn validsa082() {
         Description:Tests that an external PE may be defined (but not referenced).
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/082.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/082.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1271,7 +1270,7 @@ fn validsa083() {
         Description:Tests that an external PE may be defined (but not referenced).
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/083.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/083.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1286,7 +1285,7 @@ fn validsa084() {
         Description:Test demonstrates that although whitespace can be used to set apart markup for greater readability it is not necessary.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/084.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/084.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1301,7 +1300,7 @@ fn validsa085() {
         Description:Parameter and General entities use different namespaces, so there can be an entity of each type with a given name.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/085.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/085.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1316,7 +1315,7 @@ fn validsa086() {
         Description:Tests whether entities may be declared more than once, with the first declaration being the binding one.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/086.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/086.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1331,7 +1330,7 @@ fn validsa087() {
         Description:Tests whether character references in internal entities are expanded early enough, by relying on correct handling to make the entity be well formed.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/087.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/087.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1346,7 +1345,7 @@ fn validsa088() {
         Description:Tests whether entity references in internal entities are expanded late enough, by relying on correct handling to make the expanded text be valid. (If it's expanded too early, the entity will parse as an element that's not valid in that context.)
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/088.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/088.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1361,7 +1360,7 @@ fn validsa089() {
         Description:Tests entity expansion of three legal character references, which each expand to a Unicode surrogate pair.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/089.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/089.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1377,7 +1376,7 @@ fn validsa090() {
         Description:Verifies that an XML parser will parse a NOTATION attribute; the output phase of this test ensures that the notation is reported to the application.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/090.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/090.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1393,7 +1392,7 @@ fn validsa091() {
         Description:Verifies that an XML parser will parse an ENTITY attribute; the output phase of this test ensures that the notation is reported to the application, and for validating parsers it further tests that the entity is so reported.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/091.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/091.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1408,7 +1407,7 @@ fn validsa092() {
         Description:Test demostrates that extra whitespace is normalized into a single space character.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/092.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/092.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1423,7 +1422,7 @@ fn validsa093() {
         Description:Test demonstrates that extra whitespace is not intended for inclusion in the delivered version of the document.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/093.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/093.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1438,7 +1437,7 @@ fn validsa094() {
         Description:Attribute defaults with a DTD have special parsing rules, different from other strings. That means that characters found there may look like an undefined parameter entity reference "within a markup declaration", but they aren't ... so they can't be violating the PEs in Internal Subset WFC.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/094.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/094.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1453,7 +1452,7 @@ fn validsa095() {
         Description:Basically an output test, this requires extra whitespace to be normalized into a single space character in an attribute of type NMTOKENS.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/095.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/095.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1468,7 +1467,7 @@ fn validsa096() {
         Description:Test demonstrates that extra whitespace is normalized into a single space character in an attribute of type NMTOKENS.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/096.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/096.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1483,7 +1482,7 @@ fn validsa097() {
         Description:Basically an output test, this tests whether an externally defined attribute declaration (with a default) takes proper precedence over a subsequent internal declaration.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/097.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/097.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1498,7 +1497,7 @@ fn validsa098() {
         Description:Test demonstrates that extra whitespace within a processing instruction is converted into a single space character.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/098.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/098.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1513,7 +1512,7 @@ fn validsa099() {
         Description:Test demonstrates the name of the encoding can be composed of lowercase characters.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/099.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/099.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1528,7 +1527,7 @@ fn validsa100() {
         Description:Makes sure that PUBLIC identifiers may have some strange characters. NOTE: The XML editors have said that the XML specification errata will specify that parameter entity expansion does not occur in PUBLIC identifiers, so that the '%' character will not flag a malformed parameter entity reference.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/100.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/100.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1543,7 +1542,7 @@ fn validsa101() {
         Description:This tests whether entity expansion is (incorrectly) done while processing entity declarations; if it is, the entity value literal will terminate prematurely.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/101.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/101.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1558,7 +1557,7 @@ fn validsa102() {
         Description:Test demonstrates that a CDATA attribute can pass a double quote as its value.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/102.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/102.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1573,7 +1572,7 @@ fn validsa103() {
         Description:Test demonstrates that an attribute can pass a less than sign as its value.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/103.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/103.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1588,7 +1587,7 @@ fn validsa104() {
         Description:Test demonstrates that extra whitespace within an Attribute of a Start-tag is normalized to a single space character.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/104.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/104.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1603,7 +1602,7 @@ fn validsa105() {
         Description:Basically an output test, this requires a CDATA attribute with a tab character to be passed through as one space.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/105.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/105.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1618,7 +1617,7 @@ fn validsa106() {
         Description:Basically an output test, this requires a CDATA attribute with a newline character to be passed through as one space.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/106.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/106.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1633,7 +1632,7 @@ fn validsa107() {
         Description:Basically an output test, this requires a CDATA attribute with a return character to be passed through as one space.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/107.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/107.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1648,7 +1647,7 @@ fn validsa108() {
         Description:This tests normalization of end-of-line characters (CRLF) within entities to LF, primarily as an output test.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/108.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/108.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1663,7 +1662,7 @@ fn validsa109() {
         Description:Test demonstrates that an attribute can have a null value.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/109.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/109.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1678,7 +1677,7 @@ fn validsa110() {
         Description:Basically an output test, this requires that a CDATA attribute with a CRLF be normalized to one space.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/110.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/110.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1693,7 +1692,7 @@ fn validsa111() {
         Description:Character references expanding to spaces doesn't affect treatment of attributes.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/111.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/111.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1708,7 +1707,7 @@ fn validsa112() {
         Description:Test demonstrates shows the use of content particles within the element content.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/112.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/112.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1723,7 +1722,7 @@ fn validsa113() {
         Description:Test demonstrates that it is not an error to have attributes declared for an element not itself declared.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/113.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/113.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1738,7 +1737,7 @@ fn validsa114() {
         Description:Test demonstrates that all text within a valid CDATA section is considered text and not recognized as markup.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/114.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/114.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1753,7 +1752,7 @@ fn validsa115() {
         Description:Test demonstrates that an entity reference is processed by recursively processing the replacement text of the entity.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/115.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/115.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1768,7 +1767,7 @@ fn validsa116() {
         Description:Test demonstrates that a line break within CDATA will be normalized.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/116.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/116.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1783,7 +1782,7 @@ fn validsa117() {
         Description:Test demonstrates that entity expansion is done while processing entity declarations.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/117.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/117.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1798,7 +1797,7 @@ fn validsa118() {
         Description:Test demonstrates that entity expansion is done while processing entity declarations.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/118.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/118.xml").unwrap());
 
     assert!(testxml.is_ok());
 
@@ -1813,7 +1812,7 @@ fn validsa119() {
         Description:Comments may contain any legal XML characters; only the string "--" is disallowed.
     */
 
-    let testxml = parsexml::XMLDocument::try_from(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/119.xml").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/xmltest/valid/sa/out/119.xml").unwrap());
 
     assert!(testxml.is_ok());
 
