@@ -11,6 +11,12 @@ pub fn entityexpander()
         let e = delimited(tag("&"), take_until(";"), tag(";"))(input.clone(), index);
 
         let dtdgenentities = HashMap::from([
+            //TODO remove these
+            ("ENTITY", "ENTITYRESULT".to_string()),
+            ("amp", "&".to_string()),
+            ("lt", "<".to_string()),
+            ("gt", ">".to_string()),
+            ("quot", "\"".to_string()),
         ]);
 
         match e {

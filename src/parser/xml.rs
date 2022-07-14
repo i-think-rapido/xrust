@@ -165,7 +165,7 @@ fn xmldecl()
                     whitespace0(),
                     tag("="),
                     whitespace0(),
-                    delimited_string
+                    delimited_string()
                 ), | (_,_,_,_,v) | v
             ),
             whitespace0(),
@@ -176,7 +176,7 @@ fn xmldecl()
                         whitespace0(),
                         tag("="),
                         whitespace0(),
-                        delimited_string
+                        delimited_string()
                     ), | (_,_,_,_,e) | e
                 )),
             whitespace0(),
@@ -187,7 +187,7 @@ fn xmldecl()
                         whitespace0(),
                         tag("="),
                         whitespace0(),
-                        delimited_string
+                        delimited_string()
                     ), | (_,_,_,_,s) | s
                 )),
             whitespace0(),
@@ -203,6 +203,8 @@ fn xmldecl()
         }
     )
 }
+
+
 
 // Element ::= EmptyElemTag | STag content ETag
 fn element()
@@ -244,7 +246,7 @@ fn emptyelem()
 fn taggedelem()
     -> impl Fn(String, usize) -> ParseResult<XMLNode> {
 
-    move |input, index| {
+    //move |input, index| {
         map(
             tuple10(
                 tag("<"),
@@ -263,7 +265,7 @@ fn taggedelem()
                 XMLNode::Element(n, a, c)
             }
         )
-            (input, index)}
+            //(input, index)}
 }
 
 // QualifiedName
