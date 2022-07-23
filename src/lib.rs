@@ -40,12 +40,6 @@ We need your help!
 
 */
 
-#![feature(test)]
-#![feature(associated_type_defaults)]
-#![feature(type_name_of_val)]
-
-extern crate test;
-
 pub mod xdmerror;
 pub use xdmerror::{Error, ErrorKind};
 
@@ -71,5 +65,7 @@ pub use xpath::parse;
 pub mod evaluate;
 pub use evaluate::{StaticContext, Evaluator, Constructor};
 
+#[cfg(feature = "xslt")]
 pub mod xslt;
+#[cfg(feature = "xslt")]
 pub use xslt::from_document;
