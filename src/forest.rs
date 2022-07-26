@@ -4,7 +4,6 @@
 //!
 //! Both [Forest]s and [Tree]s use an arena allocator, so the object itself is simply an index that may be copied and cloned. However, in order to dererence the [Tree] or [Node] the [Forest] must be passed as an argument. This also makes deallocating memory difficult; the objects will persist until the entire [Forest] is freed.
 
-use std::convert::TryFrom;
 use std::collections::HashMap;
 use std::collections::hash_map::Iter;
 use generational_arena::{Arena, Index};
@@ -47,9 +46,10 @@ impl Forest {
     /// Parse a string as XML to create a [Tree].
     ///
     ///```rust
-    ///let mut f = Forest::new();
-    ///let src = f.grow_tree("<Example>document</Example>")
-    ///    .expect("unable to parse XML");
+	///use xrust::forest::Forest;
+	///let mut f = Forest::new();
+	///let src = f.grow_tree("<Example>document</Example>")
+	///    .expect("unable to parse XML");
     pub fn grow_tree(&mut self, s: &str) -> Result<TreeIndex, Error> {
 	//let d = XMLDocument::try_from(s)?;
 	let d = xml::parse(s.to_string())?;

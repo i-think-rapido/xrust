@@ -1,3 +1,5 @@
+use crate::parser::ParserConfig;
+
 pub(crate) mod alt;
 pub(crate) mod delimited;
 pub(crate) mod many;
@@ -13,4 +15,5 @@ pub(crate) mod validate;
 pub(crate) mod none_of;
 pub(crate) mod value;
 
-pub(crate) type ParseResult<Output> = Result<(String, usize, Output), usize>;
+pub(crate) type ParseInput = (String, usize, ParserConfig);
+pub(crate) type ParseResult<Output> = Result<(String, usize, ParserConfig, Output), usize>;

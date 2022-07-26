@@ -6,15 +6,15 @@
 
 //extern crate nom;
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 use crate::parser::common::{is_char, name, ncname};
 use crate::qname::*;
 //use crate::parsecommon::*;
 use crate::xdmerror::*;
 
-use crate::parser::combinators::ParseResult;
-use crate::parser::combinators::alt::{alt2, alt3, alt4, alt6};
+use crate::parser::combinators::{ParseInput, ParseResult};
+use crate::parser::combinators::alt::{alt2, alt3, alt4, alt5, alt6};
 use crate::parser::combinators::delimited::delimited;
 use crate::parser::combinators::many::many0;
 use crate::parser::combinators::many::many1;
@@ -28,10 +28,14 @@ use crate::parser::combinators::tuple::tuple3;
 use crate::parser::combinators::tuple::tuple4;
 use crate::parser::combinators::tuple::tuple5;
 use crate::parser::combinators::tuple::tuple6;
+use crate::parser::combinators::tuple::tuple7;
+use crate::parser::combinators::tuple::tuple8;
+use crate::parser::combinators::tuple::tuple9;
 use crate::parser::combinators::tuple::tuple10;
 use crate::parser::combinators::whitespace::{whitespace0, whitespace1};
 use crate::parser::combinators::validate::validate;
 use crate::parser::combinators::value::value;
+use crate::parser::ParserConfig;
 use crate::Value;
 
 
@@ -73,16 +77,47 @@ pub struct XMLdecl {
 /// DTD declarations.
 /// Only general entities are supported, so far.
 /// TODO: element, attribute declarations
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum DTDDecl {
+    Element(QualifiedName, String),
+    Attlist(QualifiedName, String),
+    Notation(QualifiedName, String),
     GeneralEntity(QualifiedName, String),
+    ParamEntity(QualifiedName, String)
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct DTD {
+    elements: HashMap<String, DTDDecl>,
+    attlists: HashMap<String, DTDDecl>,
+    notations: HashMap<String, DTDDecl>,
+    generalentities: HashMap<String, DTDDecl>,
+    paramentities: HashMap<String, DTDDecl>,
+    publicid: Option<String>,
+    systemid: Option<String>,
+    name: Option<String>
+}
+
+impl DTD {
+    pub fn new() -> DTD {
+        return DTD {
+            elements: Default::default(),
+            attlists: Default::default(),
+            notations: Default::default(),
+            generalentities: Default::default(),
+            paramentities: Default::default(),
+            publicid: None,
+            systemid: None,
+            name: None
+        }
+    }
 }
 
 
 pub fn parse(e: String) -> Result<XMLDocument, Error> {
     match document(e) {
-        Ok((_, I, X)) => {
-                Result::Ok(X)
+        Ok((_,_,_, XMLDoc)) => {
+                Result::Ok(XMLDoc)
         },
         Err(u) => Result::Err(Error{kind: ErrorKind::Unknown, message: String::from(format!("unrecoverable parser error at {}", u))})
     }
@@ -90,25 +125,25 @@ pub fn parse(e: String) -> Result<XMLDocument, Error> {
 
 
 fn document(input: String) -> ParseResult<XMLDocument> {
-
+    //TODO ADD CONFIG AND DTD
     match tuple3(
         opt(prolog()),
         element(),
         opt(misc()),
-    )(input, 0) {
-        Ok((d, i, (p,c,e))) => {
+    )((input, 0, ParserConfig::new())) {
+        Ok((d, i,pc, (xmld,c,e))) => {
             if d.chars().count() == i{
-                Ok((d, i, XMLDocument {
+                Ok((d, i, pc, XMLDocument {
                     prologue: vec![],
                     content: vec![c],
                     epilogue: vec![],
-                    xmldecl: None
+                    xmldecl: xmld.unwrap()
                 }))
             } else {
                 Err(i)
             }
         }
-        Err(E) => Err(E)
+        Err(err) => Err(err)
     }
     /*
     map (
@@ -132,33 +167,24 @@ fn document(input: String) -> ParseResult<XMLDocument> {
 
 // prolog ::= XMLDecl misc* (doctypedecl Misc*)?
 fn prolog()
-    -> impl Fn(String, usize) -> ParseResult<Vec<String>> {
-    //-> ParseResult<(Option<XMLdecl>, Option<DocTypeDecl>)>
+    -> impl Fn(ParseInput)-> ParseResult<Option<XMLdecl>> {
     map(
-        tag("not yet implemented"),
-        |_| {
-            //vec![Node::new(NodeType::Comment).set_value("not yet implemented".to_string())]
-            vec![]
+    tuple3(
+        opt(xmldecl()),
+        opt(doctypedecl()),
+        whitespace0()
+    ),|(xmld, dtd, _)| {
+           xmld
         }
     )
-    /*
-    map(
-        tuple2(
-            opt(xmldecl),
-            opt(doctypedecl)
-        ),
-        |(x, dtd)| (x, dtd)
-    )
-
-     */
 }
 
 fn xmldecl()
-    -> impl Fn(String, usize) -> ParseResult<XMLdecl> {
+    -> impl Fn(ParseInput)-> ParseResult<XMLdecl> {
     map(
         tuple10(
             tag("<?xml"),
-            whitespace0(),
+            whitespace1(),
             map(
                 tuple5(
                     tag("version"),
@@ -168,7 +194,7 @@ fn xmldecl()
                     delimited_string()
                 ), | (_,_,_,_,v) | v
             ),
-            whitespace0(),
+            whitespace1(),
             opt(
                 map(
                     tuple5(
@@ -179,7 +205,7 @@ fn xmldecl()
                         delimited_string()
                     ), | (_,_,_,_,e) | e
                 )),
-            whitespace0(),
+            whitespace1(),
             opt(
                 map(
                     tuple5(
@@ -204,12 +230,194 @@ fn xmldecl()
     )
 }
 
+fn doctypedecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>{
+    move |input|
+        match tuple8(
+        tag("<!DOCTYPE"),
+        whitespace1(),
+        name(),
+        whitespace1(),
+        opt(externalid()),
+        whitespace0(),
+        opt(
+            delimited(
+                tag("["),
+                intsubset(),
+                tag("]")
+            )),
+        tag(">")
+    )(input) {
+            Ok((d,i, c,(_,_,n,_,e,_,inss,_))) => {
+                Ok((d,i,c,()))
+            }
+            Err(err) => Err(err)
+        }
+}
 
+fn externalid()
+    -> impl Fn(ParseInput) -> ParseResult<(String, Option<String>)> {
+    alt2(
+        map(
+            tuple3(
+                tag("SYSTEM"),
+                whitespace0(),
+                alt2(
+                    delimited(tag("'"),take_until("'"),tag("'")),
+                    delimited(tag("\""),take_until("\""),tag("\""))
+                ) //SystemLiteral
+            ),
+            |(_,_,sid)| (sid, None)
+        ),
+        map(
+            tuple5(
+                tag("PUBLIC"),
+                whitespace0(),
+                alt2(
+                    delimited(tag("'"),take_until("'"),tag("'")),
+                    delimited(tag("\""),take_until("\""),tag("\""))
+                ), //PubidLiteral TODO validate chars here (PubidChar from spec).
+                whitespace1(),
+                alt2(
+                    delimited(tag("'"),take_until("'"),tag("'")),
+                    delimited(tag("\""),take_until("\""),tag("\""))
+                ) //SystemLiteral
+            ),
+            |(_,_,pid,_,sid)| (sid, Some(pid))
+        )
+    )
+}
+
+
+fn intsubset()
+    -> impl Fn(ParseInput) -> ParseResult<Vec<()>> {
+    many0(
+        alt6(
+            elementdecl(),
+            attlistdecl(),
+            pedecl(),
+            gedecl(),
+            ndatadecl(),
+            whitespace1()
+        )
+    )
+}
+
+fn elementdecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    move |input|
+        match tuple7(
+                            tag("<!ELEMENT"),
+                            whitespace1(),
+                            qualname(),
+                            whitespace1(),
+                            take_until(">"), //contentspec - TODO Build out.
+                            whitespace0(),
+                            tag(">")
+                            )(input) {
+            Ok((d,i, mut c,(_,_,n,_,s,_,_))) => {
+                c.dtd.elements.insert(n.to_string(), DTDDecl::Element(n, s));
+                Ok((d, i, c, ()))
+            }
+            Err(err) => Err(err)
+        }
+}
+
+fn attlistdecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    move |input|
+        match tuple7(
+            tag("<!ATTLIST"),
+            whitespace1(),
+            qualname(),
+            whitespace1(),
+            take_until(">"), //contentspec - TODO Build out.
+            whitespace0(),
+            tag(">")
+        )(input) {
+            Ok((d,i, mut c,(_,_,n,_,s,_,_))) => {
+                c.dtd.attlists.insert(n.to_string(), DTDDecl::Attlist(n, s));
+                Ok((d, i, c, ()))
+            }
+            Err(err) => Err(err)
+        }
+}
+
+fn pedecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    move |input|
+        match tuple9(
+            tag("<!ENTITY"),
+            whitespace1(),
+            tag("%"),
+            whitespace1(),
+            qualname(),
+            whitespace1(),
+            alt2(
+                delimited(tag("'"),take_until("'"),tag("'")),
+                delimited(tag("\""),take_until("\""),tag("\""))
+            ),
+            whitespace0(),
+            tag(">")
+        )(input) {
+            Ok((d,i, mut c,(_,_,_,_,n,_,s,_,_))) => {
+                c.dtd.paramentities.insert(n.to_string(), DTDDecl::ParamEntity(n, s));
+                Ok((d, i, c, ()))
+            }
+            Err(err) => Err(err)
+        }
+}
+
+fn gedecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    move |input|
+        match tuple7(
+            tag("<!ENTITY"),
+            whitespace1(),
+            qualname(),
+            whitespace1(),
+            alt2(
+                delimited(tag("'"),take_until("'"),tag("'")),
+                delimited(tag("\""),take_until("\""),tag("\""))
+            ),
+            whitespace0(),
+            tag(">")
+        )(input) {
+            Ok((d,i, mut c,(_,_,n,_,s,_,_))) => {
+                c.dtd.generalentities.insert(n.to_string(), DTDDecl::GeneralEntity(n, s));
+                Ok((d, i, c, ()))
+            }
+            Err(err) => Err(err)
+        }
+}
+fn ndatadecl()
+    -> impl Fn(ParseInput)-> ParseResult<()> {
+    move |input|
+        match tuple7(
+            tag("<!NOTATION"),
+            whitespace1(),
+            qualname(),
+            whitespace1(),
+            take_until(">"), //contentspec - TODO Build out.
+            whitespace0(),
+            tag(">")
+        )(input) {
+            Ok((d,i, mut c,(_,_,n,_,s,_,_))) => {
+                c.dtd.notations.insert(n.to_string(), DTDDecl::Notation(n, s));
+                Ok((d, i, c, ()))
+            }
+            Err(err) => Err(err)
+        }
+}
 
 // Element ::= EmptyElemTag | STag content ETag
 fn element()
-    -> impl Fn(String, usize) -> ParseResult<XMLNode> {
-    move |input, index|
+    -> impl Fn(ParseInput)-> ParseResult<XMLNode> {
+    move |input|
     //map(
         alt2(
             emptyelem(),
@@ -220,12 +428,12 @@ fn element()
 //            e
 //        }
     //)
-    (input, index)
+    (input)
 }
 
 // EmptyElemTag ::= '<' Name (Attribute)* '/>'
 fn emptyelem()
-    -> impl Fn(String, usize) -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput)-> ParseResult<XMLNode> {
         map(
             tuple5(
                 tag("<"),
@@ -244,21 +452,30 @@ fn emptyelem()
 // ETag ::= '</' Name '>'
 // NB. Names must match
 fn taggedelem()
-    -> impl Fn(String, usize) -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput)-> ParseResult<XMLNode> {
 
     //move |input, index| {
         map(
-            tuple10(
-                tag("<"),
-                qualname(),
-                attributes(), //many0(attribute),
-                whitespace0(),
-                tag(">"),
-                content(),
-                tag("</"),
-                qualname(),
-                whitespace0(),
-                tag(">"),
+            validate(
+                tuple10(
+                    tag("<"),
+                    qualname(),
+                    attributes(), //many0(attribute),
+                    whitespace0(),
+                    tag(">"),
+                    content(),
+                    tag("</"),
+                    qualname(),
+                    whitespace0(),
+                    tag(">"),
+                ),
+                |(_, n, a, _, _, c, _, e, _, _)|{
+                    if n.to_string() == e.to_string() {
+                        true
+                    } else {
+                        false
+                    }
+                }
             ),
             |(_, n, a, _, _, c, _, e, _, _)| {
                 // TODO: check that the start tag name and end tag name match (n == e)
@@ -271,14 +488,14 @@ fn taggedelem()
 // QualifiedName
 
 fn qualname()
-    -> impl Fn(String, usize)  -> ParseResult<QualifiedName> {
+    -> impl Fn(ParseInput) -> ParseResult<QualifiedName> {
     alt2(
         prefixed_name(),
         unprefixed_name(),
     )
 }
 fn unprefixed_name()
-    -> impl Fn(String, usize)  -> ParseResult<QualifiedName> {
+    -> impl Fn(ParseInput) -> ParseResult<QualifiedName> {
     map (
         ncname(),
         |localpart| {
@@ -287,7 +504,7 @@ fn unprefixed_name()
     )
 }
 fn prefixed_name()
-    -> impl Fn(String, usize)  -> ParseResult<QualifiedName> {
+    -> impl Fn(ParseInput) -> ParseResult<QualifiedName> {
     map (
         tuple3(
             ncname(),
@@ -301,7 +518,7 @@ fn prefixed_name()
 }
 
 fn attributes()
-    -> impl Fn(String, usize)  -> ParseResult<Vec<XMLNode>> {
+    -> impl Fn(ParseInput) -> ParseResult<Vec<XMLNode>> {
     //this is just a wrapper around the attribute function, that checks for duplicates.
     validate(
         many0(
@@ -329,7 +546,7 @@ fn attributes()
 }
 // Attribute ::= Name '=' AttValue
 fn attribute()
-    -> impl Fn(String, usize)  -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     map(
         tuple6(
             whitespace1(),
@@ -345,14 +562,14 @@ fn attribute()
     )
 }
 fn delimited_string()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     alt2(
         string_single(),
         string_double(),
     )
 }
 fn string_single()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     delimited(
         tag("\'"),
         map(
@@ -380,7 +597,7 @@ fn string_single()
      */
 }
 fn string_double()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     delimited(
         tag("\""),
         map(
@@ -411,7 +628,7 @@ fn string_double()
 
 // content ::= CharData? ((element | Reference | CDSect | PI | Comment) CharData?)*
 fn content()
-    -> impl Fn(String, usize) -> ParseResult<Vec<XMLNode>> {
+    -> impl Fn(ParseInput)-> ParseResult<Vec<XMLNode>> {
     map(
         tuple2(
             opt(chardata()),
@@ -449,7 +666,7 @@ fn content()
 // Reference ::= EntityRef | CharRef
 // TODO
 fn reference()
-    -> impl Fn(String, usize)  -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     map(
         tag("not yet implemented"),
         |_| {
@@ -460,7 +677,7 @@ fn reference()
 
 // PI ::= '<?' PITarget (char* - '?>') '?>'
 fn processing_instruction()
-    -> impl Fn(String, usize)  -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     validate(
         map(
         delimited(
@@ -492,7 +709,7 @@ fn processing_instruction()
 
 // Comment ::= '<!--' (char* - '--') '-->'
 fn comment()
-    -> impl Fn(String, usize)  -> ParseResult<XMLNode> {
+    -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     validate(
         map(
         delimited(
@@ -518,18 +735,25 @@ fn comment()
 
 // Misc ::= Comment | PI | S
 fn misc()
-    -> impl Fn(String, usize)  -> ParseResult<Vec<XMLNode>> {
-        many0(
-            alt2(
-                comment(),
-                processing_instruction()
-            )
+    -> impl Fn(ParseInput) -> ParseResult<Vec<XMLNode>> {
+        map(
+            tuple2(
+                many0(
+                    map(
+                        alt2(
+                            tuple2(whitespace0(),comment()),
+                            tuple2(whitespace0(), processing_instruction())
+                        ), |(ws,xn)|{ xn }
+                    )
+                ),
+                whitespace0()
+            ),|(v,w)|{v}
         )
 }
 
 // CharData ::= [^<&]* - (']]>')
 fn chardata()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     map(
         many1(
             alt3(
@@ -545,14 +769,14 @@ fn chardata()
 }
 
 fn chardata_cdata()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
         delimited(
             tag("<![CDATA["),take_until("]]>"),tag("]]>")
     )
 }
 
 fn chardata_escapes()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     alt6(
         chardata_unicode_codepoint(),
         value(tag("&gt;"),">".to_string()),
@@ -564,7 +788,7 @@ fn chardata_escapes()
 }
 
 fn chardata_unicode_codepoint()
-    -> impl Fn(String, usize) -> ParseResult<String> {
+    -> impl Fn(ParseInput)-> ParseResult<String> {
     map(
         alt2(
             delimited(tag("&#x"),parse_hex(),tag(";")),
@@ -574,7 +798,7 @@ fn chardata_unicode_codepoint()
     )
 }
 fn parse_hex()
-    -> impl Fn(String, usize) -> ParseResult<u32>{
+    -> impl Fn(ParseInput)-> ParseResult<u32>{
     map (
         take_while_m_n(1, 6, |c: char| c.is_ascii_hexdigit()),
         |hex| {
@@ -583,7 +807,7 @@ fn parse_hex()
     )
 }
 fn parse_decimal()
-    -> impl Fn(String, usize) -> ParseResult<u32>{
+    -> impl Fn(ParseInput)-> ParseResult<u32>{
     map (
         take_while_m_n(1, 6, |c: char| c.is_ascii_digit()),
         |dec| {
@@ -594,7 +818,7 @@ fn parse_decimal()
 
 
 fn chardata_literal()
-    -> impl Fn(String, usize)  -> ParseResult<String> {
+    -> impl Fn(ParseInput) -> ParseResult<String> {
     map(
         validate(many1(none_of("<&")),
                |v: &Vec<String>|
