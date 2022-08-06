@@ -8,14 +8,15 @@
 
 use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
-use crate::parser::common::{is_char, name, ncname};
+use crate::parser::common::{is_char, is_namechar, name, ncname};
 use crate::qname::*;
 //use crate::parsecommon::*;
 use crate::xdmerror::*;
 
 use crate::parser::combinators::{ParseInput, ParseResult};
-use crate::parser::combinators::alt::{alt2, alt3, alt4, alt5, alt6};
+use crate::parser::combinators::alt::{alt2, alt3, alt4, alt5, alt6, alt7};
 use crate::parser::combinators::delimited::delimited;
+use crate::parser::combinators::expander::{genentityexpander, paramentityexpander};
 use crate::parser::combinators::many::many0;
 use crate::parser::combinators::many::many1;
 use crate::parser::combinators::map::map;
@@ -91,8 +92,8 @@ pub struct DTD {
     elements: HashMap<String, DTDDecl>,
     attlists: HashMap<String, DTDDecl>,
     notations: HashMap<String, DTDDecl>,
-    generalentities: HashMap<String, DTDDecl>,
-    paramentities: HashMap<String, DTDDecl>,
+    pub(crate) generalentities: HashMap<String, DTDDecl>,
+    pub(crate) paramentities: HashMap<String, DTDDecl>,
     publicid: Option<String>,
     systemid: Option<String>,
     name: Option<String>
@@ -127,17 +128,17 @@ pub fn parse(e: String) -> Result<XMLDocument, Error> {
 fn document(input: String) -> ParseResult<XMLDocument> {
     //TODO ADD CONFIG AND DTD
     match tuple3(
-        opt(prolog()),
+        prolog(),
         element(),
         opt(misc()),
     )((input, 0, ParserConfig::new())) {
-        Ok((d, i,pc, (xmld,c,e))) => {
+        Ok((d, i,pc, ((xmld, pr),c,e))) => {
             if d.chars().count() == i{
                 Ok((d, i, pc, XMLDocument {
-                    prologue: vec![],
+                    prologue: pr,
                     content: vec![c],
                     epilogue: vec![],
-                    xmldecl: xmld.unwrap()
+                    xmldecl: xmld
                 }))
             } else {
                 Err(i)
@@ -167,14 +168,16 @@ fn document(input: String) -> ParseResult<XMLDocument> {
 
 // prolog ::= XMLDecl misc* (doctypedecl Misc*)?
 fn prolog()
-    -> impl Fn(ParseInput)-> ParseResult<Option<XMLdecl>> {
+    -> impl Fn(ParseInput)-> ParseResult<(Option<XMLdecl>, Vec<XMLNode>)> {
     map(
-    tuple3(
+    tuple4(
         opt(xmldecl()),
+        misc(),
         opt(doctypedecl()),
-        whitespace0()
-    ),|(xmld, dtd, _)| {
-           xmld
+        misc()
+    ),|(xmld, mut m1,  dtd, mut m2)| {
+            m1.append(&mut m2);
+            (xmld, m1)
         }
     )
 }
@@ -303,6 +306,7 @@ fn intsubset()
     )
 }
 
+//elementdecl	   ::=   	'<!ELEMENT' S Name S contentspec S? '>'
 fn elementdecl()
     -> impl Fn(ParseInput) -> ParseResult<()>
 {
@@ -312,7 +316,7 @@ fn elementdecl()
                             whitespace1(),
                             qualname(),
                             whitespace1(),
-                            take_until(">"), //contentspec - TODO Build out.
+                            contentspec(), //contentspec - TODO Build out.
                             whitespace0(),
                             tag(">")
                             )(input) {
@@ -323,26 +327,210 @@ fn elementdecl()
             Err(err) => Err(err)
         }
 }
+fn contentspec()
+    -> impl Fn(ParseInput) -> ParseResult<String>
+{
+    alt4(
+        value(tag("EMPTY"),"EMPTY".to_string()),
+        value(tag("ANY"),"ANY".to_string()),
+        mixed(),
+        children()
+    )
+}
 
+//AttlistDecl ::= '<!ATTLIST' S Name AttDef* S? '>'
 fn attlistdecl()
     -> impl Fn(ParseInput) -> ParseResult<()>
 {
     move |input|
-        match tuple7(
+        match tuple6(
             tag("<!ATTLIST"),
             whitespace1(),
             qualname(),
-            whitespace1(),
-            take_until(">"), //contentspec - TODO Build out.
+            many0(
+             attdef()
+            ),
             whitespace0(),
             tag(">")
         )(input) {
-            Ok((d,i, mut c,(_,_,n,_,s,_,_))) => {
-                c.dtd.attlists.insert(n.to_string(), DTDDecl::Attlist(n, s));
+            Ok((d,i, mut c,(_,_,n,_,_,_))) => {
+                c.dtd.attlists.insert(n.to_string(), DTDDecl::Attlist(n, "".to_string()));
                 Ok((d, i, c, ()))
             }
             Err(err) => Err(err)
         }
+}
+
+//AttDef ::= S Name S AttType S DefaultDecl
+fn attdef()
+    -> impl Fn(ParseInput) -> ParseResult<String>
+{
+    map(
+        tuple6(
+            whitespace1(),
+            name(),
+            whitespace1(),
+            atttype(),
+            whitespace1(),
+            defaultdecl()
+        ),|x|{"".to_string()}
+    )
+}
+
+//AttType ::= StringType | TokenizedType | EnumeratedType
+fn atttype()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    alt3(
+        tag("CDATA"), //Stringtype
+        alt7( //tokenizedtype
+             tag("ID"),
+             tag("IDREF"),
+             tag("IDREFS"),
+             tag("ENTITY"),
+             tag("ENTITIES"),
+             tag("NMTOKEN"),
+             tag("NMTOKENS")
+        ),
+        enumeratedtype()
+    )
+}
+
+//EnumeratedType ::= NotationType | Enumeration
+fn enumeratedtype()
+    -> impl Fn(ParseInput) -> ParseResult<()>{
+    alt2(
+        notationtype(),
+        enumeration()
+    )
+}
+
+//NotationType ::= 'NOTATION' S '(' S? Name (S? '|' S? Name)* S? ')'
+fn notationtype()
+    -> impl Fn(ParseInput) -> ParseResult<()>{
+    map(
+        tuple8(
+            tag("NOTATION"),
+            whitespace1(),
+            tag("("),
+            whitespace0(),
+            name(),
+            many0(
+                tuple4(
+                    whitespace0(),
+                    tag("|"),
+                    whitespace0(),
+                    name()
+                )
+            ),
+            whitespace0(),
+            tag(")")
+        )
+        ,|x| {()}
+    )
+}
+
+//Enumeration ::= '(' S? Nmtoken (S? '|' S? Nmtoken)* S? ')'
+fn enumeration()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    map(
+        tuple6(
+            tag("("),
+            whitespace0(),
+            nmtoken(),
+            many0(
+                tuple4(
+                    whitespace0(),
+                    tag("|"),
+                    whitespace0(),
+                    nmtoken()
+                )
+            ),
+            whitespace0(),
+            tag(")")
+        ),|x|{()}
+    )
+}
+
+fn nmtoken()
+-> impl Fn(ParseInput) -> ParseResult<()>
+{
+    map(
+        many1(
+            take_while(|c| is_namechar(c))
+        ),|x|{()}
+    )
+}
+
+//DefaultDecl ::= '#REQUIRED' | '#IMPLIED' | (('#FIXED' S)? AttValue)
+fn defaultdecl()
+    -> impl Fn(ParseInput) -> ParseResult<()>
+{
+    map(
+        alt3(
+            value(tag("#REQUIRED"),"#REQUIRED".to_string()),
+            value(tag("#IMPLIED"), "#IMPLIED".to_string()),
+            map(
+                tuple2(
+                    opt(
+                        tuple2(
+                            value(tag("#FIXED"),"#FIXED".to_string()),
+                            whitespace1()
+                        )
+                    ),
+                    attvalue()
+                ),|(x,y)|{
+                    match x {
+                        None => {y}
+                        Some((mut f, _)) => {
+                           f.push_str(&*y);
+                           f
+                        }
+                    }
+                }
+            )
+        ),
+        |x| { () }
+    )
+}
+
+//AttValue ::= '"' ([^<&"] | Reference)* '"' | "'" ([^<&'] | Reference)* "'"
+fn attvalue()
+    -> impl Fn(ParseInput) -> ParseResult<String>
+{
+    alt2(
+        delimited(
+            tag("\'"),
+            map(
+                many0(
+                    alt3(
+                        take_while(|c| !"&\'<".contains(c)),
+                        genentityexpander(),
+                        paramentityexpander()
+                    )
+                ),|v|{
+                    v.join("")
+                }
+            ),
+            tag("\'")
+        ),
+        delimited(
+            tag("\""),
+            map(
+                many0(
+                    alt3(
+                        take_while(|c| !"&\"<".contains(c)),
+                        genentityexpander(),
+                        paramentityexpander()
+                    )
+                ),|v|{
+                    v.join("")
+                }
+            ),
+            tag("\"")
+        )
+    )
 }
 
 fn pedecl()
@@ -395,7 +583,7 @@ fn gedecl()
         }
 }
 fn ndatadecl()
-    -> impl Fn(ParseInput)-> ParseResult<()> {
+    -> impl Fn(ParseInput) -> ParseResult<()> {
     move |input|
         match tuple7(
             tag("<!NOTATION"),
@@ -412,6 +600,134 @@ fn ndatadecl()
             }
             Err(err) => Err(err)
         }
+}
+
+//Mixed	   ::=   	'(' S? '#PCDATA' (S? '|' S? Name)* S? ')*' | '(' S? '#PCDATA' S? ')'
+fn mixed()
+    -> impl Fn(ParseInput) -> ParseResult<String>
+{
+    alt2(
+        map(
+            tuple6(
+                tag("("),
+                whitespace0(),
+                tag("#PCDATA"),
+                many0(
+                    tuple4(
+                        whitespace0(),
+                        tag("|"),
+                        whitespace0(),
+                        name()
+                    )
+                ),
+                whitespace0(),
+                tag(")*")
+            ), |x| {"".to_string()}
+        ),
+        map(
+            tuple5(
+                tag("("),
+                whitespace0(),
+                tag("#PCDATA"),
+                whitespace0(),
+                tag(")")
+            ), |x| {"".to_string()}
+        )
+    )
+}
+
+// children	   ::=   	(choice | seq) ('?' | '*' | '+')?
+fn children()
+    -> impl Fn(ParseInput)-> ParseResult<String>
+{
+    map(
+        tuple2(
+            alt2(
+                choice(),
+                seq()
+            ),
+            opt(
+                alt3(
+                    tag("?"),
+                    tag("*"),
+                    tag("+"),
+                )
+            )
+        ),
+        |x|{ "".to_string() }
+    )
+}
+
+// cp	   ::=   	(Name | choice | seq) ('?' | '*' | '+')?
+fn cp()
+    -> impl Fn(ParseInput)-> ParseResult<String>
+{
+    move |input|
+    map(
+        tuple2(
+            alt3(
+                name(),
+                choice(),
+                seq()
+            ),
+            opt(
+                alt3(
+                    tag("?"),
+                    tag("*"),
+                    tag("+"),
+                )
+            )
+        ),
+        |x| { "".to_string() }
+    )
+    (input)
+}
+//choice	   ::=   	'(' S? cp ( S? '|' S? cp )+ S? ')'
+fn choice()
+    -> impl Fn(ParseInput)-> ParseResult<String>
+{
+    move |input|
+    map(
+        tuple6(
+            tag("("),
+            whitespace0(),
+            cp(),
+            many0(
+                tuple4(
+                    whitespace0(),
+                    tag("|"),
+                    whitespace0(),
+                    cp()
+                )
+            ),
+            whitespace0(),
+            tag(")")
+        ),|x| {"".to_string()}
+    )
+    (input)
+}
+
+//seq	   ::=   	'(' S? cp ( S? ',' S? cp )* S? ')'
+fn seq()
+    -> impl Fn(ParseInput)-> ParseResult<String>
+{
+    map(
+        tuple6(
+            tag("("),
+            whitespace0(),
+            cp(),
+            many0(
+                tuple4(
+                    whitespace0(),
+                    tag(","),
+                    whitespace0(),
+                    cp()
+                )
+            ),
+            whitespace0(),
+            tag(")")
+        ),|x|{"".to_string()}
+    )
 }
 
 // Element ::= EmptyElemTag | STag content ETag
@@ -668,9 +984,9 @@ fn content()
 fn reference()
     -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     map(
-        tag("not yet implemented"),
+        genentityexpander(),
         |_| {
-            XMLNode::Text(Value::String("not yet implemented".to_string()))
+            XMLNode::Text(Value::String("".to_string()))
         }
     )
 }
@@ -694,8 +1010,10 @@ fn processing_instruction()
             XMLNode::PI(String::from(n), Value::String(v.to_string()))
         }
     ), | v| match v {
-            XMLNode::PI(_, Value::String(v)) => {
+            XMLNode::PI(N, Value::String(v)) => {
                 if v.contains(|c: char| !is_char(&c.to_string())){
+                    false
+                } else if N.to_lowercase() == "xml" {
                     false
                 } else {
                     true

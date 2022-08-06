@@ -10,7 +10,6 @@ use xrust::parser;
 
 
 #[test]
-#[ignore]
 fn op01pass2() {
     /*
         Test ID:o-p01pass2
@@ -43,7 +42,6 @@ fn op06pass1() {
 
 
 #[test]
-#[ignore]
 fn op07pass1() {
     /*
         Test ID:o-p07pass1
@@ -77,7 +75,6 @@ fn op08pass1() {
 
 
 #[test]
-#[ignore]
 fn op09pass1() {
     /*
         Test ID:o-p09pass1
@@ -94,7 +91,6 @@ fn op09pass1() {
 
 
 #[test]
-#[ignore]
 fn op12pass1() {
     /*
         Test ID:o-p12pass1
@@ -128,7 +124,6 @@ fn op22pass4() {
 
 
 #[test]
-#[ignore]
 fn op22pass5() {
     /*
         Test ID:o-p22pass5
@@ -162,7 +157,6 @@ fn op22pass6() {
 
 
 #[test]
-#[ignore]
 fn op28pass1() {
     /*
         Test ID:o-p28pass1
@@ -196,7 +190,6 @@ fn op28pass3() {
 
 
 #[test]
-#[ignore]
 fn op28pass4() {
     /*
         Test ID:o-p28pass4
@@ -247,7 +240,6 @@ fn op29pass1() {
 
 
 #[test]
-#[ignore]
 fn op30pass1() {
     /*
         Test ID:o-p30pass1
@@ -264,7 +256,6 @@ fn op30pass1() {
 
 
 #[test]
-#[ignore]
 fn op30pass2() {
     /*
         Test ID:o-p30pass2
@@ -281,7 +272,6 @@ fn op30pass2() {
 
 
 #[test]
-#[ignore]
 fn op31pass1() {
     /*
         Test ID:o-p31pass1
@@ -298,7 +288,6 @@ fn op31pass1() {
 
 
 #[test]
-#[ignore]
 fn op31pass2() {
     /*
         Test ID:o-p31pass2
@@ -315,7 +304,6 @@ fn op31pass2() {
 
 
 #[test]
-#[ignore]
 fn op43pass1() {
     /*
         Test ID:o-p43pass1
@@ -332,7 +320,6 @@ fn op43pass1() {
 
 
 #[test]
-#[ignore]
 fn op45pass1() {
     /*
         Test ID:o-p45pass1
@@ -468,7 +455,6 @@ fn op52pass1() {
 
 
 #[test]
-#[ignore]
 fn op53pass1() {
     /*
         Test ID:o-p53pass1
@@ -502,7 +488,6 @@ fn op54pass1() {
 
 
 #[test]
-#[ignore]
 fn op55pass1() {
     /*
         Test ID:o-p55pass1
@@ -604,7 +589,6 @@ fn op60pass1() {
 
 
 #[test]
-#[ignore]
 fn op61pass1() {
     /*
         Test ID:o-p61pass1
@@ -621,7 +605,6 @@ fn op61pass1() {
 
 
 #[test]
-#[ignore]
 fn op62pass1() {
     /*
         Test ID:o-p62pass1
@@ -638,7 +621,6 @@ fn op62pass1() {
 
 
 #[test]
-#[ignore]
 fn op63pass1() {
     /*
         Test ID:o-p63pass1
@@ -655,7 +637,6 @@ fn op63pass1() {
 
 
 #[test]
-#[ignore]
 fn op64pass1() {
     /*
         Test ID:o-p64pass1
@@ -672,7 +653,6 @@ fn op64pass1() {
 
 
 #[test]
-#[ignore]
 fn op68pass1() {
     /*
         Test ID:o-p68pass1
@@ -706,7 +686,6 @@ fn op69pass1() {
 
 
 #[test]
-#[ignore]
 fn op70pass1() {
     /*
         Test ID:o-p70pass1
@@ -723,7 +702,6 @@ fn op70pass1() {
 
 
 #[test]
-#[ignore]
 fn op71pass1() {
     /*
         Test ID:o-p71pass1
@@ -740,7 +718,6 @@ fn op71pass1() {
 
 
 #[test]
-#[ignore]
 fn op72pass1() {
     /*
         Test ID:o-p72pass1

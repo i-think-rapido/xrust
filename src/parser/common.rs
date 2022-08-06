@@ -35,7 +35,7 @@ pub(crate) fn name()
             //(input, index)
 }
 
-fn is_namechar(ch: char) -> bool {
+pub(crate) fn is_namechar(ch: char) -> bool {
     if is_namestartchar(ch) {
         true
     } else {

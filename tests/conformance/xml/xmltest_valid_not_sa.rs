@@ -13,7 +13,6 @@ use xrust::parser;
 
 
 #[test]
-#[ignore]
 fn validnotsa001() {
     /*
         Test ID:valid-not-sa-001
@@ -32,7 +31,6 @@ fn validnotsa001() {
 }
 
 #[test]
-#[ignore]
 fn validnotsa002() {
     /*
         Test ID:valid-not-sa-002
@@ -488,7 +486,6 @@ fn validnotsa026() {
 }
 
 #[test]
-#[ignore]
 fn validnotsa027() {
     /*
         Test ID:valid-not-sa-027
@@ -545,7 +542,6 @@ fn validnotsa029() {
 }
 
 #[test]
-#[ignore]
 fn validnotsa030() {
     /*
         Test ID:valid-not-sa-030

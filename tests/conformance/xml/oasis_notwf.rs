@@ -17,7 +17,6 @@ fn op01fail1() {
         Description:S cannot occur before the prolog
     */
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/oasis/p01fail1.xml").unwrap());
-    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/oasis/p01fail1.xml").unwrap());
 
     assert!(testxml.is_err());
 
