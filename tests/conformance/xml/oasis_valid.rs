@@ -336,7 +336,6 @@ fn op45pass1() {
 
 
 #[test]
-#[ignore]
 fn op46pass1() {
     /*
         Test ID:o-p46pass1
@@ -353,7 +352,6 @@ fn op46pass1() {
 
 
 #[test]
-#[ignore]
 fn op47pass1() {
     /*
         Test ID:o-p47pass1
@@ -370,7 +368,6 @@ fn op47pass1() {
 
 
 #[test]
-#[ignore]
 fn op48pass1() {
     /*
         Test ID:o-p48pass1
@@ -421,7 +418,6 @@ fn op50pass1() {
 
 
 #[test]
-#[ignore]
 fn op51pass1() {
     /*
         Test ID:o-p51pass1
@@ -438,7 +434,6 @@ fn op51pass1() {
 
 
 #[test]
-#[ignore]
 fn op52pass1() {
     /*
         Test ID:o-p52pass1
@@ -521,7 +516,6 @@ fn op56pass1() {
 
 
 #[test]
-#[ignore]
 fn op57pass1() {
     /*
         Test ID:o-p57pass1
@@ -538,7 +532,6 @@ fn op57pass1() {
 
 
 #[test]
-#[ignore]
 fn op58pass1() {
     /*
         Test ID:o-p58pass1
@@ -555,7 +548,6 @@ fn op58pass1() {
 
 
 #[test]
-#[ignore]
 fn op59pass1() {
     /*
         Test ID:o-p59pass1
@@ -572,7 +564,6 @@ fn op59pass1() {
 
 
 #[test]
-#[ignore]
 fn op60pass1() {
     /*
         Test ID:o-p60pass1

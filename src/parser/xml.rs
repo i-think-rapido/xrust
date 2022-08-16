@@ -996,18 +996,27 @@ fn processing_instruction()
     -> impl Fn(ParseInput) -> ParseResult<XMLNode> {
     validate(
         map(
-        delimited(
-            tag("<?"),
-            tuple4(
-                whitespace0(),
+            tuple5(
+                tag("<?"),
                 name(),
+                opt(
+                    tuple2(
+                        whitespace1(),
+                        take_until("?>")
+                    )
+                ),
                 whitespace0(),
-                take_until("?>"),
+                tag("?>")
             ),
-            tag("?>"),
-        ),
-        |(_, n, _, v)| {
-            XMLNode::PI(String::from(n), Value::String(v.to_string()))
+        |(_, n,vt , _, _)| {
+            match vt {
+                None => {
+                    XMLNode::PI(String::from(n), Value::String("".to_string()))
+                },
+                Some((_, v)) => {
+                    XMLNode::PI(String::from(n), Value::String(v))
+                }
+            }
         }
     ), | v| match v {
             XMLNode::PI(N, Value::String(v)) => {

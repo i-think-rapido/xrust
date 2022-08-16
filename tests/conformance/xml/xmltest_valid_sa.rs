@@ -10,7 +10,7 @@ James Clark XMLTEST cases - Standalone
 
 use std::convert::TryFrom;
 use std::fs;
-use xrust::parser;
+use xrust::{Error, parser, XMLDocument};
 
 
 #[test]
@@ -1062,7 +1062,6 @@ fn validsa056() {
 }
 
 #[test]
-#[ignore]
 fn validsa057() {
     /*
         Test ID:valid-sa-057
@@ -1100,7 +1099,6 @@ fn validsa058() {
 }
 
 #[test]
-#[ignore]
 fn validsa059() {
     /*
         Test ID:valid-sa-059
@@ -1320,7 +1318,6 @@ fn validsa070() {
 }
 
 #[test]
-#[ignore]
 fn validsa071() {
     /*
         Test ID:valid-sa-071
@@ -1377,7 +1374,6 @@ fn validsa073() {
 }
 
 #[test]
-#[ignore]
 fn validsa074() {
     /*
         Test ID:valid-sa-074
@@ -1396,7 +1392,6 @@ fn validsa074() {
 }
 
 #[test]
-#[ignore]
 fn validsa075() {
     /*
         Test ID:valid-sa-075
@@ -1415,7 +1410,6 @@ fn validsa075() {
 }
 
 #[test]
-#[ignore]
 fn validsa076() {
     /*
         Test ID:valid-sa-076
@@ -1434,7 +1428,6 @@ fn validsa076() {
 }
 
 #[test]
-#[ignore]
 fn validsa077() {
     /*
         Test ID:valid-sa-077
@@ -1453,7 +1446,6 @@ fn validsa077() {
 }
 
 #[test]
-#[ignore]
 fn validsa078() {
     /*
         Test ID:valid-sa-078
@@ -1472,7 +1464,6 @@ fn validsa078() {
 }
 
 #[test]
-#[ignore]
 fn validsa079() {
     /*
         Test ID:valid-sa-079
@@ -1510,7 +1501,6 @@ fn validsa080() {
 }
 
 #[test]
-#[ignore]
 fn validsa081() {
     /*
         Test ID:valid-sa-081
@@ -1680,7 +1670,6 @@ fn validsa089() {
 }
 
 #[test]
-#[ignore]
 fn validsa090() {
     /*
         Test ID:valid-sa-090
@@ -1718,7 +1707,6 @@ fn validsa091() {
 }
 
 #[test]
-#[ignore]
 fn validsa092() {
     /*
         Test ID:valid-sa-092
@@ -1905,7 +1893,6 @@ fn validsa101() {
 }
 
 #[test]
-#[ignore]
 fn validsa102() {
     /*
         Test ID:valid-sa-102
@@ -1961,7 +1948,6 @@ fn validsa104() {
 }
 
 #[test]
-#[ignore]
 fn validsa105() {
     /*
         Test ID:valid-sa-105
@@ -1980,7 +1966,6 @@ fn validsa105() {
 }
 
 #[test]
-#[ignore]
 fn validsa106() {
     /*
         Test ID:valid-sa-106
@@ -1999,7 +1984,6 @@ fn validsa106() {
 }
 
 #[test]
-#[ignore]
 fn validsa107() {
     /*
         Test ID:valid-sa-107
@@ -2037,7 +2021,6 @@ fn validsa108() {
 }
 
 #[test]
-#[ignore]
 fn validsa109() {
     /*
         Test ID:valid-sa-109
@@ -2094,7 +2077,6 @@ fn validsa111() {
 }
 
 #[test]
-#[ignore]
 fn validsa112() {
     /*
         Test ID:valid-sa-112
@@ -2113,7 +2095,6 @@ fn validsa112() {
 }
 
 #[test]
-#[ignore]
 fn validsa113() {
     /*
         Test ID:valid-sa-113

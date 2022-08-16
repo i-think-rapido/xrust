@@ -29,8 +29,17 @@ pub(crate) fn name()
         map(
         tuple2(
             take_while_m_n(1, 1, is_namestartchar),
-            take_while(is_namechar),
-        ), |(a, b)| [a, b].concat()
+            opt(
+                take_while(is_namechar)
+            ),
+        ), |(nsc, nc)| {
+            match nc{
+                None => {nsc},
+                Some(nc) => {
+                    [nsc, nc].concat()
+                }
+            }
+        }
     )
             //(input, index)
 }

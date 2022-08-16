@@ -252,7 +252,6 @@ fn validsa016() {
 }
 
 #[test]
-#[ignore]
 fn validsa017() {
     /*
         Test ID:valid-sa-017
