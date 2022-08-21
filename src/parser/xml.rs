@@ -8,7 +8,7 @@
 
 use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
-use crate::parser::common::{is_char, is_namechar, name, ncname};
+use crate::parser::common::{is_char, is_namechar, name, ncname, is_PubidChar, is_PubidCharwithapos};
 use crate::qname::*;
 //use crate::parsecommon::*;
 use crate::xdmerror::*;
@@ -277,8 +277,8 @@ fn externalid()
                 tag("PUBLIC"),
                 whitespace0(),
                 alt2(
-                    delimited(tag("'"),take_until("'"),tag("'")),
-                    delimited(tag("\""),take_until("\""),tag("\""))
+                    delimited(tag("'"),take_while(|c| !is_PubidChar(c)),tag("'")),
+                    delimited(tag("\""),take_while(|c| !is_PubidCharwithapos(c)),tag("\""))
                 ), //PubidLiteral TODO validate chars here (PubidChar from spec).
                 whitespace1(),
                 alt2(
@@ -290,7 +290,6 @@ fn externalid()
         )
     )
 }
-
 
 fn intsubset()
     -> impl Fn(ParseInput) -> ParseResult<Vec<()>> {

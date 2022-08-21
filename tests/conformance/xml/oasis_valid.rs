@@ -4,7 +4,6 @@ OASIS/NIST test cases
 
 */
 
-use std::convert::TryFrom;
 use std::fs;
 use xrust::parser;
 

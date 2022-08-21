@@ -124,3 +124,44 @@ pub fn is_char(ch: &String) -> bool {
         _ => false
     }
 }
+
+pub(crate) fn is_PubidCharwithapos(ch: char) -> bool {
+    match ch {
+        '\'' => true,
+        _ => is_PubidChar(ch)
+    }
+}
+
+pub(crate) fn is_PubidChar(ch: char) -> bool{
+    match ch {
+        '\u{0020}' // #x0020
+        | '\u{000A}' // #xA
+        | '\u{000D}' // #xD
+        | 'a'..='z'
+        | 'A'..='Z'
+        | '0'..='9'
+        | '-'
+        | '('
+        | ')'
+        | '+'
+        | ','
+        | '.'
+        | '/'
+        | ':'
+        | '='
+        | '?'
+        | ';'
+        | '!'
+        | '*'
+        | '#'
+        | '@'
+        | '$'
+        | '_'
+        | '%'
+        => {
+            true
+        },
+        // etc
+        _ => false
+    }
+}
