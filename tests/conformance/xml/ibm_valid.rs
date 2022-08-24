@@ -39,11 +39,9 @@ fn ibmvalidP02ibm02v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P02/ibm02v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -60,11 +58,9 @@ fn ibmvalidP03ibm03v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P03/ibm03v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -1845,11 +1841,9 @@ fn ibmvalidP54ibm54v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P54/ibm54v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -2761,12 +2755,9 @@ fn ibmvalidP79ibm79v01xml() {
         Description:Tests extPE
     */
 
-    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P79/ibm79v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
+    let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P79/bm79v01.xml").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
 
 }
 
@@ -2804,11 +2795,9 @@ fn ibmvalidP85ibm85v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P85/ibm85v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -2825,11 +2814,9 @@ fn ibmvalidP86ibm86v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P86/ibm86v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -2846,11 +2833,9 @@ fn ibmvalidP87ibm87v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P87/ibm87v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -2867,11 +2852,9 @@ fn ibmvalidP88ibm88v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P88/ibm88v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
@@ -2888,11 +2871,9 @@ fn ibmvalidP89ibm89v01xml() {
     */
 
     let testxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/valid/P89/ibm89v01.xml").unwrap());
-    let canonicalxml = parser::xml::parse(fs::read_to_string("tests/conformance/xml/xmlconf/ibm/").unwrap());
 
     assert!(testxml.is_ok());
-    assert!(canonicalxml.is_ok());
-    assert!(testxml.unwrap() == canonicalxml.unwrap());
+
 
 }
 
