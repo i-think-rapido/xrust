@@ -1056,6 +1056,46 @@ fn reverseaxis(input: &str) -> IResult<&str, &str> {
   )
   (input)
 }
+// AttributeAbbr ::= '@'
+fn attributeabbr(input: &str) -> IResult<&str, &str> {
+  map (
+    tag("@"),
+    |a| {
+      a
+    }
+  )
+  (input)
+}
+// SelfAbbr ::= '.'
+fn selfabbr(input: &str) -> IResult<&str, &str> {
+  map (
+    tag("."),
+    |a| {
+      a
+    }
+  )
+  (input)
+}
+// ParentAbbr ::= '..'
+fn parentabbr(input: &str) -> IResult<&str, &str> {
+  map (
+    tag(".."),
+    |a| {
+      a
+    }
+  )
+  (input)
+}
+// DecendendOrSelfAbbr ::= '//'
+fn decendendorselfabbr(input: &str) -> IResult<&str, &str> {
+  map (
+    tag("//"),
+    |a| {
+      a
+    }
+  )
+  (input)
+}
 
 fn qname(input: &str) -> IResult<&str, NodeTest> {
   alt((
